@@ -1,63 +1,41 @@
-# TODO
 class Solution:
     def findMedianSortedArrays(self, nums1: list[int], nums2: list[int]) -> float:
-        len1 = len(nums1)
-        len2 = len(nums2)
-        medianPos = (len1 + len2) // 2
-        pos11 = len1 // 2
-        pos12 = len1 // 2
-        pos21 = len2 // 2
-        pos22 = len2 // 2
-        # while True:
-        #     if nums1[pos11] < nums2[pos21]:
+        mergedArr = Solution().mergeArrays(nums1, nums2, len(nums1), len(nums2))
+        totalLen = len(nums1) + len(nums2)
+        if totalLen % 2 == 0:
+            return (mergedArr[totalLen // 2] + mergedArr[(totalLen // 2) - 1]) / 2
+        return mergedArr[totalLen // 2]
 
-        return 0
+    # Merge sort O(log(n+m))
+    def mergeArrays(self, arr1, arr2, n1, n2):
+        arr3 = [None] * (n1 + n2)
+        i = 0
+        j = 0
+        k = 0
 
+        while i < n1 and j < n2:
+            if arr1[i] < arr2[j]:
+                arr3[k] = arr1[i]
+                k = k + 1
+                i = i + 1
+            else:
+                arr3[k] = arr2[j]
+                k = k + 1
+                j = j + 1
 
-# class Solution:
-#     def findMedianSortedArrays(self, nums1: list[int], nums2: list[int]) -> float:
-#         medianPos = (len(nums1) + len(nums2)) // 2
-#         pos1 = 0
-#         pos2 = 0
-#         lastItem = 0
-#         while True:
-#             if (len(nums1) + len(nums2)) % 2 == 0:
-#                 if pos1 + pos2 == medianPos:
-#                     print("lastitem", lastItem)
-#                     if nums1[pos1] < nums2[pos2] and lastItem < nums2[pos2]:
-#                         return (nums1[pos1] + lastItem) / 2
-#                     if nums1[pos1] < nums2[pos2] and nums2[pos2] < lastItem:
-#                         return (nums1[pos1] + nums2[pos2]) / 2
-#                     if nums2[pos2] < nums1[pos1] and lastItem < nums1[pos1]:
-#                         return (nums2[pos2] + lastItem) / 2
-#                     if nums2[pos2] < nums1[pos1] and nums1[pos1] < lastItem:
-#                         return (nums1[pos1] + nums2[pos2]) / 2
-#
-#                 if nums1[pos1] < nums2[pos2]:
-#                     if len(nums1) == pos1 + 1:
-#                         lastItem = nums2[pos2]
-#                         pos2 += 1
-#                     else:
-#                         lastItem = nums1[pos1]
-#                         pos1 += 1
-#                 else:
-#                     if len(nums2) == pos2 + 1:
-#                         lastItem = nums1[pos1]
-#                         pos1 += 1
-#                     else:
-#                         lastItem = nums2[pos2]
-#                         pos2 += 1
-#                 print("pos", pos1, pos2)
-#             else:
-#                 if pos1 + pos2 == medianPos:
-#                     if nums1[pos1] < nums2[pos2]:
-#                         return nums1[pos1]
-#                     return nums2[pos2]
-#                 if nums1[pos1] < nums2[pos2]:
-#                     pos1 += 1
-#                 else:
-#                     pos2 += 1
-#                 print("pos", pos1, pos2)
+        while i < n1:
+            arr3[k] = arr1[i]
+            k = k + 1
+            i = i + 1
+
+        while j < n2:
+            arr3[k] = arr2[j]
+            k = k + 1
+            j = j + 1
+        return arr3
 
 
-print(Solution().findMedianSortedArrays([1], [2, 3]))
+print(Solution().findMedianSortedArrays([-7, 1, 4, 8, 22], [-100, 3]))
+# arr1 = [1, 4, 5, 6]
+# arr2 = [3, 8, 9]
+# print(Solution().mergeArrays(arr1, arr2, len(arr1), len(arr2)))
